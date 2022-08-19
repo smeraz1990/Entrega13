@@ -74,12 +74,9 @@ const registerStrategy = new LocalStrategy({passReqToCallback:true},
     async (req,username,password,done)=>{
         try{
         const existingUser = await User.findOne({username})
-        console.log('fierro',username)
-        console.log('fierroexiste',existingUser)
-
         if(existingUser)
         {
-            return done('User already exist',null)   
+            return done(null,null)   
         }
 
         const newUser = {
@@ -91,7 +88,7 @@ const registerStrategy = new LocalStrategy({passReqToCallback:true},
         done(null,createdUser)
     } catch(error){
         console.log('error registrando usuerio')
-        done('Error en registro',null)
+        done(null,null)
     }
     })
 
@@ -100,7 +97,7 @@ const registerStrategy = new LocalStrategy({passReqToCallback:true},
             const user = await User.findOne({username})
 
             if(!user || !isvalidpassword(password,user.password)){
-                return done('invalid credentials')
+                return done(null)
             }
 
             done(null,user)
@@ -160,6 +157,7 @@ app.get("/ruta-protegida", checkAuthentication, (req, res) => {
 });
 
 //  LOGOUT
+
 app.get("/logout", routes.getLogout);
 
 //  FAIL ROUTE
@@ -168,7 +166,7 @@ app.get("*", routes.failRoute);
 
 
 
-conectarDB("mongodb://localhost:27017/coderhouse", (err) => {
+conectarDB(config.URL_BASE_DE_DATOS, (err) => {
   if (err) return console.log("error en conexión de base de datos", err);
   console.log("BASE DE DATOS CONECTADA");
 })

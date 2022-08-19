@@ -9,10 +9,7 @@ function getLogin(req, res) {
     var user = req.user;
     console.log("user logueado");
     res.render("login-ok", {
-      usuario: user.username,
-      nombre: user.firstName,
-      apellido: user.lastName,
-      email: user.email,
+      usuario: user.username
     });
   } else {
     console.log("user NO logueado");
